@@ -1,4 +1,4 @@
-package strings;
+package arrays.carryforward;
 
 public class SpecialSequence {
 

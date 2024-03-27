@@ -7,24 +7,24 @@ public class EquilibriumIndex {
   public int solve(ArrayList<Integer> A) {
 
     int len = A.size();
+    int sum1 = 0, sum2 = 0;
 
-    ArrayList<Long> prefixSum = new ArrayList<>();
-    ArrayList<Long> postfixSum = new ArrayList<>();
+    // Find the total sum of the input array
+    for (int num : A) {
+      sum1 += num;
+    }
 
-    prefixSum.add((long) 0);
+    for (int i = 0; i < len; i++) {
+      // Calculate the leftover sum (final sum - currElement and keep updating 1 by 1)
+      sum1 -= A.get(i);
 
-    for (int i = 0; i < len; i++)
-      prefixSum.add((long) A.get(i) + prefixSum.get(i));
+      if (sum1 == sum2) // If sum1 and sum2 are equal, then we have found the Equilibrium Index
+      {
+        return i;
+      }
 
-    for (int i = 0; i <= len; i++)
-      postfixSum.add((long) 0);
-
-    for (int i = len - 1; i >= 0; i--)
-      postfixSum.set(i, (long) A.get(i) + postfixSum.get(i + 1));
-
-    for (int i = 1; i <= len; i++) {
-      if (prefixSum.get(i - 1).equals(postfixSum.get(i)))
-        return i - 1;
+      // Keep track of elements traversed sum
+      sum2 += A.get(i);
     }
 
     return -1;

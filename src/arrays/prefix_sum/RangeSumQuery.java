@@ -7,29 +7,21 @@ public class RangeSumQuery {
   public ArrayList<Long> rangeSum(ArrayList<Integer> A, ArrayList<ArrayList<Integer>> B) {
 
     int len = A.size();
-    ArrayList<Long> res = new ArrayList<>();
-    ArrayList<Long> prefixSum = new ArrayList<>();
 
-    // Calculate the prefix sum for input ArrayList
-    for (int i = 0; i < len; i++) {
-        if (i == 0) {
-            prefixSum.add((long) A.get(i));
-        } else {
-            prefixSum.add((long) (prefixSum.get(i - 1) + A.get(i)));
-        }
+    ArrayList<Long> prefixSum = new ArrayList<>();
+    ArrayList<Long> res = new ArrayList<>();
+
+    prefixSum.add((long) A.get(0));
+
+    for (int i = 1; i < len; i++) {
+      prefixSum.add(prefixSum.get(i - 1) + A.get(i));
     }
 
-    len = B.size();
+    for (ArrayList<Integer> queries : B) {
+      int left = queries.get(0);
+      int right = queries.get(1);
 
-    for (int i = 0; i < len; i++) {
-      int left = B.get(i).get(0);
-      int right = B.get(i).get(1);
-
-        if (left == 0) {
-            res.add((long) prefixSum.get(right));
-        } else {
-            res.add((long) (prefixSum.get(right) - prefixSum.get(left - 1)));
-        }
+      res.add(prefixSum.get(right) - ((left > 0) ? prefixSum.get(left - 1) : 0));
     }
 
     return res;
